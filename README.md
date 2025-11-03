@@ -81,26 +81,35 @@ Then open your app at
  (frontend)
 👉 http://localhost:5000
  (backend API)
+ 
+## 🗄️ Database Schema Overview (MySQL)
 
-🧱 Database Schema Overview
-Users Table
-Column	Type	Description
-id	BIGINT	Primary key
-email	VARCHAR	Unique user email
-password_hash	VARCHAR	Hashed password
-role	ENUM('tenant', 'landlord', 'admin')	User role
-created_at	DATETIME	Timestamp
-Listings Table
-Column	Type	Description
-id	BIGINT	Primary key
-landlord_id	FK (Users)	Owner of listing
-title	VARCHAR	Property title
-description	TEXT	Property description
-price_monthly_cents	INT	Monthly rent
-type	ENUM('room','apartment','hostel','studio')	Type of property
-status	ENUM('active','occupied','inactive','draft')	Current status
-created_at	DATETIME	Timestamp
-🔐 Environment Variables
+Dwello uses a normalized relational database schema to efficiently manage users, property listings, bookings, and in-app messaging between landlords and tenants.
+
+| Table | Description | Key Columns |
+|--------|-------------|-------------|
+| **users** | Stores user accounts for tenants & landlords | id, email, password_hash, role, phone, created_at |
+| **listings** | Stores property listings | id, landlord_id, title, description, price_monthly_cents, type, status, created_at |
+| **listing_images** | Stores multiple images per property | id, listing_id, url, position |
+| **bookings** | Tracks property bookings by tenants | id, listing_id, tenant_id, move_in_date, status, price_monthly_cents |
+| **favorites** | Tracks saved properties per user | id, user_id, listing_id, created_at |
+| **message_threads** | Represents a conversation thread between landlord and tenant | id, listing_id, landlord_id, tenant_id, created_at |
+| **messages** | Stores messages within a thread | id, thread_id, sender_id, content, is_read, created_at |
+
+
+
+
+## 🚀 Future Improvements
+
+🔐 Add user authentication (JWT-based login/signup)
+
+📸 Enable property image uploads (via Cloudinary or Firebase)
+
+💬 Real-time chat between landlord & tenant
+
+📱 Mobile responsiveness and PWA support
+
+🏘️ Search filters and map view integration
 
 The backend requires a .env file:
 
